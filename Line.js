@@ -8,7 +8,7 @@ class Line{
 
     draw(){
         ctx.strokeStyle = 'black';
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 1;
 
         ctx.beginPath();
         ctx.moveTo(this.startXpos, this.startYpos); // from this point (x, y)
