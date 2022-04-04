@@ -7,6 +7,7 @@ class Line{
     }
 
     draw(){
+        
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 1;
 
