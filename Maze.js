@@ -6,10 +6,12 @@ class mazeSquare {
         this.yPos = yPos;
         this.background = background;
         this.wall = true;
-        this.status = "noLookieYet";
+        this.status = "not indexed";
+        this.adjacents = [];
+        this.connections = [];
     }
     
-    draw() {
+    draw(background) {
         ctx.drawImage(this.background, (canvas.width / columns)* this.colIndex,
         (canvas.height / rows)* this.rowIndex,
         canvas.width / columns,
