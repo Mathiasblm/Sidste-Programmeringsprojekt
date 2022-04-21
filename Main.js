@@ -21,7 +21,7 @@ let focus = new Array();
 let sqBackground = new Image();
 sqBackground.src = "sprites/X_junction/X_junction.png";
 let sqBackground2 = new Image();
-sqBackground2.src = "sprites/parth.png";
+sqBackground2.src = "sprites/Path.png";
 
 /*
 window.onload = function() {
