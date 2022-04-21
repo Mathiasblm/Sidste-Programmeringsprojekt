@@ -1,5 +1,5 @@
 class mazeSquare {
-    constructor(rowIndex, colIndex, xPos, yPos, background) {
+    constructor(colIndex, rowIndex, xPos, yPos, background) {
         this.rowIndex = rowIndex;
         this.colIndex = colIndex;
         this.xPos = xPos;
@@ -12,10 +12,10 @@ class mazeSquare {
     }
     
     draw(background) {
-        ctx.drawImage(this.background, (canvas.width / columns)* this.colIndex,
-        (canvas.height / rows)* this.rowIndex,
-        canvas.width / columns,
-        canvas.height / rows
+        ctx.drawImage(this.background, (canvas.width / rows)* this.colIndex,
+        (canvas.height / columns)* this.rowIndex,
+        canvas.width / rows,
+        canvas.height / columns
         );
     }
 }

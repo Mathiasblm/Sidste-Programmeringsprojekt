@@ -4,14 +4,14 @@ let ctx = canvas.getContext("2d");
 canvas.width = 600;
 canvas.height = 600;
 
-ctx.fillStyle = "#795548";
+ctx.fillStyle = "#34568B";
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-let columns = 25;
-let rows = 25;
+let columns = 5;
+let rows = 5;
 let lines = [];
-let sqWidth = canvas.width/columns;
-let sqHeight = canvas.height/rows;
+let sqWidth = canvas.width/rows;
+let sqHeight = canvas.height/columns;
 let canvasX = (window.outerWidth - canvas.width)/2;
 let canvasY = (window.outerHeight - canvas.height)/2;
 let gridCords = [];
@@ -26,7 +26,7 @@ sqBackground2.src = "sprites/parth.png";
 /*
 window.onload = function() {
         // vertical lines
-    for (let i = 0; i < columns; i++){
+    for (let i = 0; i < rowumns; i++){
       lines.push(new Line(
           (sqWidth*i),
           0,
@@ -35,7 +35,7 @@ window.onload = function() {
       ));
         
         // Horizontal lines
-        for (let j = 0; j < rows; j++){
+        for (let j = 0; j < cols; j++){
             lines.push(new Line(
                 0,
                 (sqHeight * j),
@@ -53,8 +53,8 @@ window.onload = function() {
 
 setInterval(function() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-   for(let row of maze)
-    for(let column of row)
+   for(let col of maze)
+    for(let column of col)
         column.draw();
     for(let line of lines) {
         line.draw();
@@ -64,26 +64,27 @@ setInterval(function() {
     
 function generateMaze() {
     let mazeSquares = [];
-    for (let y = 0; y < columns; y++) {
-        mazeSquares[y] = [];
+    for (let row = 0; row < rows; row++) {
+        mazeSquares[row] = [];
         
-        for (let x = 0; x < rows; x++) {
-            let ms = new mazeSquare(x, y, sqWidth*y, sqHeight * x, sqBackground, 0, 0);
-            mazeSquares[y].push(ms);
+        for (let col = 0; col < columns; col++) {
+            let ms = new mazeSquare(col, row, sqWidth*row, sqHeight * col, sqBackground, 0, 0);
+            mazeSquares[row].push(ms);
             ms.draw(); 
-            if(mazeSquares[y]) {
-                if(mazeSquares[y][x-1]) {
-                    let up = mazeSquares[y][x-1];
-                    ms.adjacents.push(up);
-                    up.adjacents.push(ms);
-                }
-            }
-            
-            if(mazeSquares[y-1]) {
-                if(mazeSquares[y-1][x]) {
-                    let left = mazeSquares[y-1][x];
+
+            if(mazeSquares[row-1]) {
+                if(mazeSquares[row-1][col]) {
+                    let left = mazeSquares[row-1][col];
                     ms.adjacents.push(left);
                     left.adjacents.push(ms);
+                }
+            }
+
+            if(mazeSquares[row]) {
+                if(mazeSquares[row][col-1]) {
+                    let up = mazeSquares[row][col-1];
+                    ms.adjacents.push(up);
+                    up.adjacents.push(ms);
                 }
             }
         }
