@@ -5,50 +5,16 @@ canvas.width = 600;
 canvas.height = 600;
 
 
-//ctx.fillStyle = "#34568B";
-//ctx.fillRect(0, 0, canvas.width, canvas.height);
+ctx.fillStyle = "#34568B";
+ctx.fillRect(0, 0, canvas.width, canvas.height);
 //------------------------------------------------------------
 
-    function runLoad(param){
-        if(!param){
-            return
-        }
-        var c=document.getElementById('canvas'),
-        ctx=c.getContext('2d'),
-        pi = Math.PI,
-        xCenter = c.width/2,
-        yCenter = c.height/2,
-        radius = c.width/3,
-        startSize = radius/3,
-        num=5,
-        posX=[],posY=[],angle,size,i;
-    
-        window.setInterval(function() {
-        num++;
-        ctx.clearRect ( 0 , 0 , xCenter*2 , yCenter*2 );
-        for (i=0; i<9; i++){
-            ctx.beginPath();
-            ctx.fillStyle = 'rgba(69,99,255,'+.1*i+')';
-            if (posX.length==i){
-            angle = pi*i*.25;
-            posX[i] = xCenter + radius * Math.cos(angle);
-            posY[i] = yCenter + radius * Math.sin(angle);
-            }
-            ctx.arc(
-            posX[(i+num)%8],
-            posY[(i+num)%8],
-            startSize/9*i,
-            0, pi*2, 1); 
-            ctx.fill();
-        }
-        }, 100);
-    };
-    runLoad();
+
  
 //_________________________________________________________________________
 
-let columns = 5;
-let rows = 5;
+let columns = 25;
+let rows = 25;
 let lines = [];
 let sqWidth = canvas.width/rows;
 let sqHeight = canvas.height/columns;
@@ -168,10 +134,14 @@ function drawBackground(){
     for(let i = 0; i < current.adjacents.length; i++){
         current.adjacents[i].background = sqBackground2;
     }
+    current.draw();
 }
 
 function primAlgorithm() {
+    console.log("Current is: Row " + current.rowIndex + " Col " + current.colIndex);
+    console.log("The focus array: " + focus);
     focus.splice(0,1);
+    console.log("The focus array: " + focus);
     // tilføj til dem er er kigget på
     indexed.push(current);
     current.status = "indexed";
@@ -186,8 +156,41 @@ function primAlgorithm() {
         }
     }
     console.log(focus);
-    //runLoad(param);
-    current.draw();
+
+    // indexed is visited
+    // focus is frontier
+
+
+    //vælger start position
+    let focusIndex = Math.floor(Math.random() * (focus.length));
+    let newPath = focus[focusIndex];
+    current = newPath;
+    
+    //****************************************************
+    console.log("The chosen frontier Path is: Row " + newPath.rowIndex + " Col " + newPath.colIndex);
+    console.log("Current is now: Row " + current.rowIndex + " Col " + current.colIndex);
+    //****************************************************
+
+    focus.splice([focusIndex],1);
+
+    //****************************************************
+    console.log("The focus array: " + focus);
+    for(let i = 0; i < focus.length; i++){
+        console.log(focus[i]);
+    }
+    //****************************************************
+
+    current.status = "indexed";
+    indexed.push(current);
+
+    //****************************************************
+    console.log("The indexed array: " + indexed);
+    for(let i = 0; i < indexed.length; i++){
+        console.log(indexed[i]);
+    }
+    //****************************************************
+    
+
     
 }
 primAlgorithm();
