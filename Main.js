@@ -4,8 +4,48 @@ let ctx = canvas.getContext("2d");
 canvas.width = 600;
 canvas.height = 600;
 
-ctx.fillStyle = "#34568B";
-ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+//ctx.fillStyle = "#34568B";
+//ctx.fillRect(0, 0, canvas.width, canvas.height);
+//------------------------------------------------------------
+
+    function runLoad(param){
+        if(!param){
+            return
+        }
+        var c=document.getElementById('canvas'),
+        ctx=c.getContext('2d'),
+        pi = Math.PI,
+        xCenter = c.width/2,
+        yCenter = c.height/2,
+        radius = c.width/3,
+        startSize = radius/3,
+        num=5,
+        posX=[],posY=[],angle,size,i;
+    
+        window.setInterval(function() {
+        num++;
+        ctx.clearRect ( 0 , 0 , xCenter*2 , yCenter*2 );
+        for (i=0; i<9; i++){
+            ctx.beginPath();
+            ctx.fillStyle = 'rgba(69,99,255,'+.1*i+')';
+            if (posX.length==i){
+            angle = pi*i*.25;
+            posX[i] = xCenter + radius * Math.cos(angle);
+            posY[i] = yCenter + radius * Math.sin(angle);
+            }
+            ctx.arc(
+            posX[(i+num)%8],
+            posY[(i+num)%8],
+            startSize/9*i,
+            0, pi*2, 1); 
+            ctx.fill();
+        }
+        }, 100);
+    };
+    runLoad();
+ 
+//_________________________________________________________________________
 
 let columns = 5;
 let rows = 5;
@@ -15,7 +55,9 @@ let sqHeight = canvas.height/columns;
 let canvasX = (window.outerWidth - canvas.width)/2;
 let canvasY = (window.outerHeight - canvas.height)/2;
 let gridCords = [];
+// visited
 let indexed = new Array();
+// frontier
 let focus = new Array();
 
 let sqBackground = new Image();
@@ -72,17 +114,35 @@ function generateMaze() {
             mazeSquares[row].push(ms);
             ms.draw(); 
 
+            // Adjacents to new Path
+
             if(mazeSquares[row-1]) {
                 if(mazeSquares[row-1][col]) {
                     let left = mazeSquares[row-1][col];
-                    ms.adjacents.push(left);
-                    left.adjacents.push(ms);
+                    ms.adjacentsWalls.push(left);
+                    left.adjacentsWalls.push(ms);
                 }
             }
 
             if(mazeSquares[row]) {
                 if(mazeSquares[row][col-1]) {
                     let up = mazeSquares[row][col-1];
+                    ms.adjacentsWalls.push(up);
+                    up.adjacentsWalls.push(ms);
+                }
+            }
+
+            if(mazeSquares[row-2]) {
+                if(mazeSquares[row-2][col]) {
+                    let left = mazeSquares[row-2][col];
+                    ms.adjacents.push(left);
+                    left.adjacents.push(ms);
+                }
+            }
+
+            if(mazeSquares[row]) {
+                if(mazeSquares[row][col-2]) {
+                    let up = mazeSquares[row][col-2];
                     ms.adjacents.push(up);
                     up.adjacents.push(ms);
                 }
@@ -103,15 +163,30 @@ focus.push(start);
 let current = start;
 console.log(start); 
 
+function drawBackground(){
+    current.background = sqBackground2;
+    for(let i = 0; i < current.adjacents.length; i++){
+        current.adjacents[i].background = sqBackground2;
+    }
+}
+
 function primAlgorithm() {
     focus.splice(0,1);
+    // tilføj til dem er er kigget på
     indexed.push(current);
     current.status = "indexed";
-    current.background = sqBackground2;
-    current.adjacents[0].background = sqBackground2;
-    current.adjacents[1].background = sqBackground2;
-    current.adjacents[2].background = sqBackground2;
-    current.adjacents[3].background = sqBackground2;
+    
+    
+    drawBackground();
+
+    for(let i = 0; i < current.adjacents.length; i++){
+        
+        if(current.adjacents[i].status == "not_indexed"){
+            focus.push(current.adjacents[i]);
+        }
+    }
+    console.log(focus);
+    //runLoad(param);
     current.draw();
     
 }

@@ -6,9 +6,10 @@ class mazeSquare {
         this.yPos = yPos;
         this.background = background;
         this.wall = true;
-        this.status = "not indexed";
+        this.status = "not_indexed";
         this.adjacents = [];
-        this.connections = [];
+        this.adjacentsWalls = [];
+        //this.connections = [];
     }
     
     draw(background) {
