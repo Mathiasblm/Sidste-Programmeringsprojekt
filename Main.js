@@ -126,4 +126,5 @@ setInterval(function() {
            column.draw();
        }
    }
+   drawMaze();
 }, 100);
