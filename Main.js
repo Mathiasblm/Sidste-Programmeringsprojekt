@@ -4,84 +4,36 @@ let ctx = canvas.getContext("2d");
 canvas.width = 600;
 canvas.height = 600;
 
-
-ctx.fillStyle = "#34568B";
-ctx.fillRect(0, 0, canvas.width, canvas.height);
 //------------------------------------------------------------
-
-
- 
-//_________________________________________________________________________
-
-let columns = 25;
-let rows = 25;
-let lines = [];
+let columns = 5;
+let rows = 5;
 let sqWidth = canvas.width/rows;
 let sqHeight = canvas.height/columns;
 let canvasX = (window.outerWidth - canvas.width)/2;
 let canvasY = (window.outerHeight - canvas.height)/2;
-let gridCords = [];
+
 // visited
-let indexed = new Array();
+let visited = new Array();
 // frontier
-let focus = new Array();
+let frontier = new Array();
 
 let sqBackground = new Image();
 sqBackground.src = "sprites/X_junction/X_junction.png";
 let sqBackground2 = new Image();
 sqBackground2.src = "sprites/Path.png";
 
-/*
-window.onload = function() {
-        // vertical lines
-    for (let i = 0; i < rowumns; i++){
-      lines.push(new Line(
-          (sqWidth*i),
-          0,
-          (sqWidth*i),
-          canvas.height
-      ));
-        
-        // Horizontal lines
-        for (let j = 0; j < cols; j++){
-            lines.push(new Line(
-                0,
-                (sqHeight * j),
-                canvas.width,
-                (sqHeight * j)
-            ));
-            gridCords.push([sqWidth*i, sqHeight * j]);
-        }
-    }
-    console.log(lines);
-    console.log(gridCords);
-}
-
-*/
-
-setInterval(function() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-   for(let col of maze)
-    for(let column of col)
-        column.draw();
-    for(let line of lines) {
-        line.draw();
- 
-    }
-}, 1000, 100);
-    
 function generateMaze() {
-    let mazeSquares = [];
+    let mazeSquares = new Array();
+    //laver et array af arrays og pusher en mazesquare ind i hver af dem
     for (let row = 0; row < rows; row++) {
         mazeSquares[row] = [];
         
         for (let col = 0; col < columns; col++) {
-            let ms = new mazeSquare(col, row, sqWidth*row, sqHeight * col, sqBackground, 0, 0);
+            let ms = new mazeSquare(col, row, sqWidth*row, sqHeight*col, sqBackground);
             mazeSquares[row].push(ms);
             ms.draw(); 
 
-            // Adjacents to new Path
-
+            //Adjacent walls til mazesquare
             if(mazeSquares[row-1]) {
                 if(mazeSquares[row-1][col]) {
                     let left = mazeSquares[row-1][col];
@@ -97,7 +49,8 @@ function generateMaze() {
                     up.adjacentsWalls.push(ms);
                 }
             }
-
+            
+            //Adjecent mazesquares 2 felter væk (thick walls)
             if(mazeSquares[row-2]) {
                 if(mazeSquares[row-2][col]) {
                     let left = mazeSquares[row-2][col];
@@ -125,72 +78,52 @@ console.log(maze);
 let startY = Math.floor(Math.random() * maze.length);
 let startX = Math.floor(Math.random() * maze[startY].length);
 let start = maze[startY][startX];
-focus.push(start);
+//laver start position til current mazesquare og tilføjer den til visited
 let current = start;
-console.log(start); 
-
-function drawBackground(){
-    current.background = sqBackground2;
-    for(let i = 0; i < current.adjacents.length; i++){
-        current.adjacents[i].background = sqBackground2;
-    }
-    current.draw();
-}
+visited.push(current);
+current.wall = false;
+console.log(current); 
 
 function primAlgorithm() {
-    console.log("Current is: Row " + current.rowIndex + " Col " + current.colIndex);
-    console.log("The focus array: " + focus);
-    focus.splice(0,1);
-    console.log("The focus array: " + focus);
-    // tilføj til dem er er kigget på
-    indexed.push(current);
-    current.status = "indexed";
-    
-    
-    drawBackground();
-
-    for(let i = 0; i < current.adjacents.length; i++){
-        
-        if(current.adjacents[i].status == "not_indexed"){
-            focus.push(current.adjacents[i]);
+    //Tjekker om den current mazesquares adjecents allerede er med i frontiers og om de er visited. Hvis begge er false bliver adjecents tilføjet til frontiers.
+    for(let i = 0; i < current.adjacents.length; i++) {
+        if(frontier.includes(current.adjacents[i]) == false) {
+            if(visited.includes(current.adjacents[i]) == false) {
+                frontier.push(current.adjacents[i]);
+            }
         }
     }
-    console.log(focus);
-
-    // indexed is visited
-    // focus is frontier
-
-
-    //vælger start position
-    let focusIndex = Math.floor(Math.random() * (focus.length));
-    let newPath = focus[focusIndex];
-    current = newPath;
-    
-    //****************************************************
-    console.log("The chosen frontier Path is: Row " + newPath.rowIndex + " Col " + newPath.colIndex);
-    console.log("Current is now: Row " + current.rowIndex + " Col " + current.colIndex);
-    //****************************************************
-
-    focus.splice([focusIndex],1);
-
-    //****************************************************
-    console.log("The focus array: " + focus);
-    for(let i = 0; i < focus.length; i++){
-        console.log(focus[i]);
-    }
-    //****************************************************
-
-    current.status = "indexed";
-    indexed.push(current);
-
-    //****************************************************
-    console.log("The indexed array: " + indexed);
-    for(let i = 0; i < indexed.length; i++){
-        console.log(indexed[i]);
-    }
-    //****************************************************
-    
-
-    
+    //Vælger en tilfældig mazesquare fra frontiers og laver den til den nye current. Current bliver addet til visited.
+    let frontierIndex = Math.floor(Math.random() * frontier.length);
+    current = frontier[frontierIndex];
+    visited.push(current);
+    current.wall = false;
+    console.log(current); 
+    //Sletter current fra frontier array.
+    frontier.splice(frontierIndex, 1);
 }
 primAlgorithm();
+
+function drawMaze() {
+    for(let i = 0; i < columns; i++) {
+        for(let j = 0; j < rows; j++) {
+            if(maze[i][j].wall == false) {
+                maze[i][j].background = sqBackground2;
+            }
+            else if(maze[i][j].wall == true) {
+                maze[i][j].background = sqBackground;
+            } 
+            maze[i][j].draw();
+        }
+    }
+}
+drawMaze();
+
+setInterval(function() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+   for(let col of maze) {
+       for(let column of col) {
+           column.draw();
+       }
+   }
+}, 100);
