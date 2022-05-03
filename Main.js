@@ -13,9 +13,9 @@ let canvasX = (window.outerWidth - canvas.width)/2;
 let canvasY = (window.outerHeight - canvas.height)/2;
 
 // visited
-let visited = new Array();
+let visited = [];
 // frontier
-let frontier = new Array();
+let frontier = [];
 
 let sqBackground = new Image();
 sqBackground.src = "sprites/X_junction/X_junction.png";
@@ -81,6 +81,9 @@ let start = maze[startY][startX];
 //laver start position til current mazesquare og tilføjer den til visited
 let current = start;
 visited.push(current);
+for(let i = 0; i < start.adjacents.length; i++) {
+    frontier.push(start.adjacents[i]);
+};
 current.wall = false;
 console.log(current); 
 
@@ -94,15 +97,18 @@ function primAlgorithm() {
         }
     }
     //Vælger en tilfældig mazesquare fra frontiers og laver den til den nye current. Current bliver addet til visited.
-    let frontierIndex = Math.floor(Math.random() * frontier.length);
-    current = frontier[frontierIndex];
+    let randomFrontierIndex = Math.floor(Math.random() * frontier.length);
+    current = frontier[randomFrontierIndex];
     visited.push(current);
     current.wall = false;
-    console.log(current); 
+    console.log(current);
     //Sletter current fra frontier array.
-    frontier.splice(frontierIndex, 1);
+    frontier.splice(randomFrontierIndex, 1);
 }
-primAlgorithm();
+
+while(frontier.length > 0) {
+    primAlgorithm();
+}
 
 function drawMaze() {
     for(let i = 0; i < columns; i++) {
