@@ -5,8 +5,8 @@ canvas.width = 600;
 canvas.height = 600;
 
 //------------------------------------------------------------
-let columns = 5;
-let rows = 5;
+let columns = 23;
+let rows = 23;
 let sqWidth = canvas.width/rows;
 let sqHeight = canvas.height/columns;
 let canvasX = (window.outerWidth - canvas.width)/2;
@@ -99,6 +99,42 @@ function primAlgorithm() {
     //Vælger en tilfældig mazesquare fra frontiers og laver den til den nye current. Current bliver addet til visited.
     let randomFrontierIndex = Math.floor(Math.random() * frontier.length);
     current = frontier[randomFrontierIndex];
+    
+    let validPath = [];
+    
+    for(let i = 0; i < current.adjacents.length; i++) {
+        
+        if(current.adjacents[i].wall == false) {
+            validPath.push(current.adjacents[i]);
+        }
+    }
+    
+    let randomPathIndex = Math.floor(Math.random() * validPath.length);
+    let validPathIndex = validPath[randomPathIndex];
+    
+    // hvis Op
+    if(Math.sign(current.rowIndex - validPathIndex.rowIndex) == 1){
+        maze[current.rowIndex - 1][current.colIndex].wall = false;
+        console.log("Test 1 ", maze[current.rowIndex - 1][current.colIndex])
+    }
+    
+    // hvis Ned
+    if(Math.sign(current.rowIndex - validPathIndex.rowIndex) == -1){
+        maze[current.rowIndex + 1][current.colIndex].wall = false;
+        console.log("Test 2 ", maze[current.rowIndex + 1][current.colIndex])
+    }
+    
+    // hvis Højre
+    if(Math.sign(current.colIndex - validPathIndex.colIndex) == 1){
+        maze[current.rowIndex][current.colIndex - 1].wall = false;
+        console.log("Test 3 ", maze[current.rowIndex][current.colIndex - 1])
+    }
+    
+    // hvis Venstre
+    if(Math.sign(current.colIndex - validPathIndex.colIndex) == -1){
+        maze[current.rowIndex][current.colIndex + 1].wall = false;
+        console.log("Test 4 ", maze[current.rowIndex][current.colIndex + 1])
+    }
     visited.push(current);
     current.wall = false;
     console.log(current);
@@ -109,6 +145,7 @@ function primAlgorithm() {
 while(frontier.length > 0) {
     primAlgorithm();
 }
+
 
 function drawMaze() {
     for(let i = 0; i < columns; i++) {
@@ -123,7 +160,7 @@ function drawMaze() {
         }
     }
 }
-drawMaze();
+
 
 setInterval(function() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -132,4 +169,5 @@ setInterval(function() {
            column.draw();
        }
    }
+    drawMaze();
 }, 100);
