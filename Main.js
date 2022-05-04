@@ -85,7 +85,7 @@ for(let i = 0; i < start.adjacents.length; i++) {
     frontier.push(start.adjacents[i]);
 };
 current.wall = false;
-console.log(current); 
+//console.log(current); 
 
 function primAlgorithm() {
     //Tjekker om den current mazesquares adjecents allerede er med i frontiers og om de er visited. Hvis begge er false bliver adjecents tilføjet til frontiers.
@@ -115,32 +115,33 @@ function primAlgorithm() {
     // hvis Op
     if(Math.sign(current.rowIndex - validPathIndex.rowIndex) == 1){
         maze[current.rowIndex - 1][current.colIndex].wall = false;
-        console.log("Test 1 ", maze[current.rowIndex - 1][current.colIndex])
+        //console.log("Test 1 ", maze[current.rowIndex - 1][current.colIndex])
     }
     
     // hvis Ned
     if(Math.sign(current.rowIndex - validPathIndex.rowIndex) == -1){
         maze[current.rowIndex + 1][current.colIndex].wall = false;
-        console.log("Test 2 ", maze[current.rowIndex + 1][current.colIndex])
+        //console.log("Test 2 ", maze[current.rowIndex + 1][current.colIndex])
     }
     
     // hvis Højre
     if(Math.sign(current.colIndex - validPathIndex.colIndex) == 1){
         maze[current.rowIndex][current.colIndex - 1].wall = false;
-        console.log("Test 3 ", maze[current.rowIndex][current.colIndex - 1])
+        //console.log("Test 3 ", maze[current.rowIndex][current.colIndex - 1])
     }
     
     // hvis Venstre
     if(Math.sign(current.colIndex - validPathIndex.colIndex) == -1){
         maze[current.rowIndex][current.colIndex + 1].wall = false;
-        console.log("Test 4 ", maze[current.rowIndex][current.colIndex + 1])
+        //console.log("Test 4 ", maze[current.rowIndex][current.colIndex + 1])
     }
     visited.push(current);
     current.wall = false;
-    console.log(current);
+    //console.log(current);
     //Sletter current fra frontier array.
     frontier.splice(randomFrontierIndex, 1);
 }
+console.log("Before While ", maze);
 
 while(frontier.length > 0) {
     primAlgorithm();
