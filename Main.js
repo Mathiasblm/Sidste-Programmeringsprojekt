@@ -5,8 +5,8 @@ canvas.width = 600;
 canvas.height = 600;
 
 //------------------------------------------------------------
-let columns = 50;
-let rows = 50;
+let columns = 25;
+let rows = 25;
 let sqWidth = canvas.width/rows;
 let sqHeight = canvas.height/columns;
 let canvasX = (window.outerWidth - canvas.width)/2;
@@ -130,7 +130,7 @@ for(let i = 0; i < start.adjacents.length; i++) {
     frontier.push(start.adjacents[i]);
 };
 current.wall = false;
-//console.log(current); 
+console.log(current); 
 
 function primAlgorithm() {
     //Tjekker om den current mazesquares adjecents allerede er med i frontiers og om de er visited. Hvis begge er false bliver adjecents tilføjet til frontiers.
@@ -160,33 +160,28 @@ function primAlgorithm() {
     // hvis Op
     if(Math.sign(current.rowIndex - validPathIndex.rowIndex) == 1){
         maze[current.rowIndex - 1][current.colIndex].wall = false;
-        //console.log("Test 1 ", maze[current.rowIndex - 1][current.colIndex])
     }
     
     // hvis Ned
     if(Math.sign(current.rowIndex - validPathIndex.rowIndex) == -1){
         maze[current.rowIndex + 1][current.colIndex].wall = false;
-        //console.log("Test 2 ", maze[current.rowIndex + 1][current.colIndex])
     }
     
     // hvis Højre
     if(Math.sign(current.colIndex - validPathIndex.colIndex) == 1){
         maze[current.rowIndex][current.colIndex - 1].wall = false;
-        //console.log("Test 3 ", maze[current.rowIndex][current.colIndex - 1])
     }
     
     // hvis Venstre
     if(Math.sign(current.colIndex - validPathIndex.colIndex) == -1){
         maze[current.rowIndex][current.colIndex + 1].wall = false;
-        //console.log("Test 4 ", maze[current.rowIndex][current.colIndex + 1])
     }
     visited.push(current);
     current.wall = false;
-    //console.log(current);
+    
     //Sletter current fra frontier array.
     frontier.splice(randomFrontierIndex, 1);
 }
-console.log("Before While ", maze);
 
 while(frontier.length > 0) {
     primAlgorithm();
@@ -198,6 +193,130 @@ function pickWall() {
     // Loop gennem alle squares
     for(let i = 0; i < columns; i++) {
         for(let j = 0; j < rows; j++) {
+            
+            //Særtilfælde for kanter (up/down)
+            if(i == 0 || i == columns-1) {
+                //fravælger hjørner
+                if(j !== 0 && j !== columns-1) {
+                    for(let t = 0; t < maze[i][j].adjacentsWalls.length; t++) {
+                        if(maze[i][j].adjacentsWalls[t].wall == true) {
+                            wallcounter += 1;
+                        }
+                    }
+                    switch(wallcounter) {
+                        case 0:
+                            break;
+
+                        case 1:
+                            //Endestykke
+                            maze[i][j].background = Vertical;
+                            wallcounter = 0;
+                            break;
+
+                        case 2:
+                            maze[i][j].background = Horisontal;
+                            wallcounter = 0;
+                            break;
+
+                        case 3:
+                            if(i == 0) {
+                                maze[i][j].background = TDown;
+                            }
+                            
+                            if(i == columns-1) {
+                                maze[i][j].background = TUp;
+                            }
+                            wallcounter = 0;
+                            break;
+                    }
+                }
+            }
+            
+            //Særtilfælde for kanter (left/right)
+            if(j == 0 || j == rows-1) {
+                if(i !== 0 && i !== rows-1) {
+                    for(let t = 0; t < maze[i][j].adjacentsWalls.length; t++) {
+                        if(maze[i][j].adjacentsWalls[t].wall == true) {
+                            wallcounter += 1;
+                        }
+                    }
+                    switch(wallcounter) {
+                        case 0:
+                            break;
+
+                        case 1:
+                            maze[i][j].background = Horisontal;
+                            wallcounter = 0;
+                            break;
+
+                        case 2:
+                            maze[i][j].background = Vertical;
+                            wallcounter = 0;
+                            break;
+
+                        case 3:
+                            if(j == 0) {
+                                maze[i][j].background = TRight;
+                            }
+                            
+                            if(j == columns-1) {
+                                maze[i][j].background = TLeft;
+                            }
+                            wallcounter = 0;
+                            break;
+                    }
+                }
+            }
+            //særtilfælde hjørner
+            if(i == 0 && j == 0 || i == 0 && j == rows-1 || i == columns-1 && j == 0 || i == columns-1 && j == rows-1) {
+                for(let t = 0; t < maze[i][j].adjacentsWalls.length; t++) {
+                    if(maze[i][j].adjacentsWalls[t].wall == true) {
+                        wallcounter += 1;
+                    }
+                }
+                switch(wallcounter) {
+                    case 0:
+                        break;
+
+                    case 1:
+                        if(i == 0) {
+                            if(maze[i][j].adjacentsWalls[0].wall == true) {
+                                maze[i][j].background = Horisontal;
+                            }
+                            if(maze[i][j].adjacentsWalls[1].wall == true) {
+                                maze[i][j].background = Vertical;
+                            }
+                        }
+                        
+                        if(i == columns-1) {
+                            if(maze[i][j].adjacentsWalls[0].wall == true) {
+                                maze[i][j].background = Vertical;
+                            }
+                            if(maze[i][j].adjacentsWalls[1].wall == true) {
+                                maze[i][j].background = Horisontal;
+                            }
+                        }
+                        wallcounter = 0;
+                        break;
+
+                    case 2:
+                        if(i == 0 && j == 0) {
+                            maze[i][j].background = TurnDownRight;
+                        }
+                        if(i == 0 && j == rows-1) {
+                            maze[i][j].background = TurnDownLeft;
+                        }
+                        if(i == columns-1 && j == 0) {
+                            maze[i][j].background = TurnUpRight;
+                        }
+                        if(i == columns-1 && j == rows-1) {
+                            maze[i][j].background = TurnUpLeft;
+                        }
+                        
+                        wallcounter = 0;
+                        break;
+                    }
+                }
             // Hvis der er 4 adjacentWalls (aka. feltet ikke er i kanten) så brug denne kode til walludregning
             if(maze[i][j].adjacentsWalls.length == 4) {
                 // tæller hvor mange adjacent walls der er
@@ -206,36 +325,30 @@ function pickWall() {
                         wallcounter += 1;
                     }
                 }
-                console.log("Wall har " + wallcounter + " adjecent walls");
+                
                 switch(wallcounter) {     
                     case 0:
                         break;
                 
                     case 1:
                         // Endestykke
-                        console.log("case 1 was used")
                         if(maze[i][j].adjacentsWalls[0].wall == true) {
                             maze[i][j].background = EndUp;
-                            console.log("case 1 UP");
                         }
                         if(maze[i][j].adjacentsWalls[1].wall == true) {
                             maze[i][j].background = EndLeft;
-                            console.log("case 1 LEFT");
                         }
                         if(maze[i][j].adjacentsWalls[2].wall == true) {
                             maze[i][j].background = EndRight;
-                            console.log("case 1 RIGHT");
                         }
                         if(maze[i][j].adjacentsWalls[3].wall == true) {
                             maze[i][j].background = EndDown;
-                            console.log("case 1 DOWN");
                         }
                         wallcounter = 0;
                         break;
                 
                     case 2:
                         // Hjørner og lige vægge
-                        console.log("case 2 was used")
                         if(maze[i][j].adjacentsWalls[0].wall == true) {
                             if(maze[i][j].adjacentsWalls[3].wall == true) {
                                 maze[i][j].background = Vertical;
@@ -268,8 +381,9 @@ function pickWall() {
                         }
                         wallcounter = 0;
                         break;
-                
+                        
                     case 3:
+                        // T Stykker
                         if(maze[i][j].adjacentsWalls[0].wall == false) {
                             maze[i][j].background = TDown;
                         }
@@ -286,6 +400,7 @@ function pickWall() {
                         break;
 
                     case 4:
+                        // + Stykker (er allerede lavet som standard)
                         wallcounter = 0;
                         break;
                 }
@@ -319,4 +434,3 @@ setInterval(function() {
 }, 100);
 
 pickWall();
-console.log("wallcounter: " + wallcounter);
