@@ -9,12 +9,37 @@
 </head>
 
 <body>
-<h1>"All this <br> programming,<br> makes me <br>wanna POOP!!"<br>-Oscar</h1>
+<!-- <h1>"All this <br> programming,<br> makes me <br>wanna POOP!!"<br>-Oscar</h1> -->
 <canvas id="canvas"></canvas>
+
+<div class="saveMaze" onclick="saveMaze()">
+    <p>Click to save the maze</p>
+    <button>Save Maze</button>
+</div>
+
+<div class="totalMazes">
+    <p>Total number of mazes saved</p>
+    <input class="totalMazesInput" type="number" readonly>
+</div>
+
+<div class="getSavedMaze">
+    <p>Type the number of the maze you want to see!</p>
+    <input class="getSavedMazeInput" type="number">
+    <button>Get Saved Maze</button>
+    
+</div>
+
+
+
+
+
+
+
+
 <script src="maze.js"></script>
 <script src="line.js"></script>
 <script src="main.js"></script>
 <script src="app.js"></script>
-<script src="server.js"></script>
+
 </body>
 </html>

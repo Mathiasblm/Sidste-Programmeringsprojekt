@@ -2,7 +2,7 @@ body {
     overflow: hidden;
     margin: 0;
     padding: 0;
-    background-color: #121212;
+    background-color: #2b2d2f;
 }
 h1{
     left: 10px;
@@ -17,5 +17,72 @@ h1{
     bottom: 0;
     left: 0;
     margin: auto;
+    z-index: 100;
     
+}
+
+.saveMaze{
+    margin-top: 10%;
+    margin-left: 3%;
+    position: relative;
+    color: #fff;
+    font-size: 20px;
+}
+button{
+    background-color: #4caf50; /* Green */
+    border: none;
+    color: #2b2d2f;
+    padding: 7px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 2%;
+}
+
+.getSavedMaze{
+    position: relative;
+    margin-top: 2%;
+    margin-left: 3%;
+    width: 20%;
+    color: #fff;
+    font-size: 20px;
+    display: block;
+}
+
+.getSavedMazeInput{
+    width: 30%;
+    padding: 8px;
+    outline: none;
+    color: #000;
+    border: 0;
+    align-items: center;
+    display: flex;
+    margin-bottom: 5%;
+}
+
+.totalMazes{
+    position: relative;
+    margin-top: 2%;
+    margin-left: 3%;
+    color: #fff;
+    width: 20%;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+}
+.totalMazesInput{
+    width: auto;
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    outline: none;
+    color: #000;
+    border: 0;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

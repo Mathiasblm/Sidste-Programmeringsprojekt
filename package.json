@@ -5,6 +5,7 @@
   "main": "server.js",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "clone": "^2.1.2",
     "cors": "^2.8.5",
     "express": "^4.17.2",
     "mongodb": "^3.6.9"

@@ -5,8 +5,8 @@ canvas.width = 600;
 canvas.height = 600;
 
 //------------------------------------------------------------
-let columns = 50;
-let rows = 50;
+let columns = 25;
+let rows = 25;
 let sqWidth = canvas.width/rows;
 let sqHeight = canvas.height/columns;
 let canvasX = (window.outerWidth - canvas.width)/2;
@@ -186,7 +186,7 @@ function primAlgorithm() {
     //Sletter current fra frontier array.
     frontier.splice(randomFrontierIndex, 1);
 }
-console.log("Before While ", maze);
+//console.log("Before While ", maze);
 
 while(frontier.length > 0) {
     primAlgorithm();
@@ -206,36 +206,36 @@ function pickWall() {
                         wallcounter += 1;
                     }
                 }
-                console.log("Wall har " + wallcounter + " adjecent walls");
+                //console.log("Wall har " + wallcounter + " adjecent walls");
                 switch(wallcounter) {     
                     case 0:
                         break;
                 
                     case 1:
                         // Endestykke
-                        console.log("case 1 was used")
+                        //console.log("case 1 was used")
                         if(maze[i][j].adjacentsWalls[0].wall == true) {
                             maze[i][j].background = EndUp;
-                            console.log("case 1 UP");
+                            //console.log("case 1 UP");
                         }
                         if(maze[i][j].adjacentsWalls[1].wall == true) {
                             maze[i][j].background = EndLeft;
-                            console.log("case 1 LEFT");
+                            //console.log("case 1 LEFT");
                         }
                         if(maze[i][j].adjacentsWalls[2].wall == true) {
                             maze[i][j].background = EndRight;
-                            console.log("case 1 RIGHT");
+                            //console.log("case 1 RIGHT");
                         }
                         if(maze[i][j].adjacentsWalls[3].wall == true) {
                             maze[i][j].background = EndDown;
-                            console.log("case 1 DOWN");
+                            //console.log("case 1 DOWN");
                         }
                         wallcounter = 0;
                         break;
                 
                     case 2:
                         // Hjørner og lige vægge
-                        console.log("case 2 was used")
+                        //console.log("case 2 was used")
                         if(maze[i][j].adjacentsWalls[0].wall == true) {
                             if(maze[i][j].adjacentsWalls[3].wall == true) {
                                 maze[i][j].background = Vertical;
@@ -311,12 +311,12 @@ function drawMaze() {
 setInterval(function() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
    for(let col of maze) {
-       for(let column of col) {
-           column.draw();
+       for(let row of col) {
+           row.draw();
        }
    }
    drawMaze();
 }, 100);
 
 pickWall();
-console.log("wallcounter: " + wallcounter);
+//console.log("wallcounter: " + wallcounter);
