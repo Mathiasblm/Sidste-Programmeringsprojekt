@@ -25,7 +25,7 @@ function arrayToObj(){
             newMazeObj.yPos = maze[i][j].yPos;
             //console.log(maze[i][j].yPos);
             newMazeObj.background = maze[i][j].background.src;
-            console.log(maze[i][j].background.src);
+            //console.log(maze[i][j].background.src);
             newMazeObj.wall = maze[i][j].wall;
             //console.log(maze[i][j].wall);
             
