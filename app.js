@@ -1,11 +1,11 @@
 
 
 
-console.log("app.js says, maze is: ", maze);
+//console.log("app.js says, maze is: ", maze);
 
 
 
-let arr = [];
+let object = [];
 
 
 
@@ -28,10 +28,6 @@ function arrayToObj(){
             //console.log(maze[i][j].background.src);
             newMazeObj.wall = maze[i][j].wall;
             //console.log(maze[i][j].wall);
-            
-
-            
-
 
             
             newRow.push(newMazeObj);
@@ -39,12 +35,12 @@ function arrayToObj(){
             
 
         }
-        arr.push(newRow);
+        object.push(newRow);
     }
     
 }
 arrayToObj();
-console.log(arr);
+//console.log(arr);
 
 
 
@@ -53,11 +49,11 @@ function saveMaze() {
 
   console.log("saveMaze is called");
   let data = {
-    Maze: arr
+    Maze: object
   };
 
   
-  console.log(JSON.stringify(data));
+  //console.log(JSON.stringify(data));
   fetch('./saveTheMaze', {
       
     method: 'POST',
@@ -77,4 +73,24 @@ function saveMaze() {
   });
     
 
+}
+
+
+function getNumOfMazes(){
+
+    fetch("/numOfMazes")
+    .then(response => response.json())
+    // object with num of arrays
+    .then(data => {
+        
+        //console.log(data.Mazes.length);
+        
+        let input = document.getElementById("TOTAL_MAZES_INPUT");
+        input.value = data.Mazes.length;
+
+        
+    
+    });
+    
+      
 }

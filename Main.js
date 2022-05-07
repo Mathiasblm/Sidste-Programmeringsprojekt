@@ -117,7 +117,7 @@ function generateMaze() {
 }
 
 let maze = generateMaze();
-console.log(maze);
+//console.log(maze);
 
 //vælger start position
 let startY = Math.floor(Math.random() * maze.length);
@@ -130,7 +130,7 @@ for(let i = 0; i < start.adjacents.length; i++) {
     frontier.push(start.adjacents[i]);
 };
 current.wall = false;
-console.log(current); 
+//console.log(current); 
 
 function primAlgorithm() {
     //Tjekker om den current mazesquares adjecents allerede er med i frontiers og om de er visited. Hvis begge er false bliver adjecents tilføjet til frontiers.

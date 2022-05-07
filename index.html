@@ -8,18 +8,18 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
-<body>
+<body onload="getNumOfMazes()">
 <!-- <h1>"All this <br> programming,<br> makes me <br>wanna POOP!!"<br>-Oscar</h1> -->
 <canvas id="canvas"></canvas>
 
-<div class="saveMaze" onclick="saveMaze()">
+<div class="saveMaze" onclick="saveMaze(), getNumOfMazes()">
     <p>Click to save the maze</p>
     <button>Save Maze</button>
 </div>
 
 <div class="totalMazes">
     <p>Total number of mazes saved</p>
-    <input class="totalMazesInput" type="number" readonly>
+    <input id="TOTAL_MAZES_INPUT" class="totalMazesInput" type="number" readonly>
 </div>
 
 <div class="getSavedMaze">

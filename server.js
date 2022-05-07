@@ -30,18 +30,36 @@ app.get("/", (request, response) => {
 
 // Save Mazes
 app.post("/saveTheMaze", (request, response) => {
-	console.log("Inserting Maze: " + request.body.Maze);
+	//console.log("Inserting Maze: " + request.body.Maze);
 
   MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("Maze_Database");
     var myobj = request.body;
-    dbo.collection("Saved_Mazes").insertOne(myobj, function(err, res) {
+    dbo.collection("saved_mazes").insertOne(myobj, function(err, res) {
       if (err) throw err;
 
-      console.log("Inserted: " + JSON.stringify(myobj))
+      //console.log("Inserted: " + JSON.stringify(myobj))
       response.header("Access-Control-Allow-Origin", "*");
       response.json(myobj);
+      db.close();
+    });
+  });
+});
+
+// get total number of mazes
+app.get("/numOfMazes", (request, response) => {
+	console.log("Finding Mazes... ");
+
+  MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("Maze_Database");
+    dbo.collection("saved_mazes").find({}).toArray(function(err, result) {
+      if (err) throw err;
+
+      console.log(result);
+      response.header("Access-Control-Allow-Origin", "*");
+      response.json({Mazes: result});
       db.close();
     });
   });
