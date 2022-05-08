@@ -26,11 +26,12 @@ function arrayToObj(){
             newMazeObj.yPos = maze[i][j].yPos;
             //console.log(maze[i][j].yPos);
             
-            let a = maze[i][j].background.src;
+            let shortUrl = maze[i][j].background.src;
             let searchString = 'http://localhost:3001/';
-            a = a.replace(searchString,"");
+            shortUrl = shortUrl.replace(searchString,"");
             //console.log(a);
-            newMazeObj.background = a;
+            newMazeObj.background = shortUrl;
+
             if(maze[i][j].wall == false) {
                 newMazeObj.background = "Sprites/Path.png";
             }
