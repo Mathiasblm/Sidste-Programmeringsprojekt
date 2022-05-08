@@ -4,9 +4,10 @@
 //console.log("app.js says, maze is: ", maze);
 
 
-
+let total_mazes_input = document.getElementById("TOTAL_MAZES_INPUT");
+let see_maze_id_input = document.getElementById("SEE_MAZE_ID_INPUT");
 let object = [];
-
+let mazeIdNum = 0;
 
 
 function arrayToObj(){
@@ -51,7 +52,8 @@ function saveMaze() {
   let data = {
     Maze: object
   };
-
+  // set id of object to num fx. 1,2,3...
+  data._id = mazeIdNum;
   
   //console.log(JSON.stringify(data));
   fetch('./saveTheMaze', {
@@ -65,6 +67,8 @@ function saveMaze() {
   
   .then(response => response.json())
   .then(data => {
+
+
     console.log('Maze inserted:', data);
     alert("Maze is saved!");
   })
@@ -76,6 +80,7 @@ function saveMaze() {
 }
 
 
+
 function getNumOfMazes(){
 
     fetch("/numOfMazes")
@@ -84,13 +89,38 @@ function getNumOfMazes(){
     .then(data => {
         
         //console.log(data.Mazes.length);
-        
-        let input = document.getElementById("TOTAL_MAZES_INPUT");
-        input.value = data.Mazes.length;
+        total_mazes_input.value = data.Mazes.length;
 
-        
+
+        // if mazes is removed manual in db, then update maze id var
+        // can duplicate id's if it is not the last id removed, but one in the middel
+        if(mazeIdNum < data.Mazes.length){
+            mazeIdNum = data.Mazes.length;
+        }
+
+        mazeIdNum = data.Mazes.length + 1;
     
     });
-    
-      
 }
+
+function getAndDisplayMaze(){
+
+    //console.log(see_maze_id_input.value);
+    let value = see_maze_id_input.value;
+
+    fetch("/displayMaze/" +  value)
+    .then(response => response.json())
+    .then(data => {
+        
+        console.log(JSON.stringify(data));
+        // {"result":[{"_id":2,"Maze": [[{}, {}, {}...]] }] }
+        // object med array i
+        // array med object i
+        // object med 2 keys i
+        // den 2 key har value af nested array
+
+        
+
+    });
+}
+

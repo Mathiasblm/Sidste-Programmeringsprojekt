@@ -36,6 +36,7 @@ app.post("/saveTheMaze", (request, response) => {
     if (err) throw err;
     var dbo = db.db("Maze_Database");
     var myobj = request.body;
+   
     dbo.collection("saved_mazes").insertOne(myobj, function(err, res) {
       if (err) throw err;
 
@@ -64,6 +65,58 @@ app.get("/numOfMazes", (request, response) => {
     });
   });
 });
+
+// get specific maze
+app.get("/displayMaze/:_id", (request, response) => {
+	console.log("Finding maze... ");
+    //console.log("req parm: " + request.params._id);
+
+  MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+
+    let dbo = db.db("Maze_Database");
+
+    let num = parseInt(request.params._id);
+    console.log("req parm: " + request.params._id);
+
+    let myQuery = {_id: num};
+    
+    console.log(myQuery);
+    dbo.collection("saved_mazes")
+    
+    .find(myQuery)
+    .toArray(function(err, result) {
+      if (err) throw err;
+
+      console.log(result);
+      //response.header("Access-Control-Allow-Origin", "*");
+      response.json({result});
+      db.close();
+    });
+  });
+});
+
+
+// // updating maze id
+// app.put("/comment", (request, response) => {
+// 	console.log("Updating maze id:" + request.body.Id);
+
+//   MongoClient.connect(url, function(err, db) {
+//     if (err) throw err;
+//     var dbo = db.db("Maze_Database");
+//     //var myquery = { Comment: new String(request.body.comment_upd)};
+//     var myquery = {  _id: new ObjectId(request.body.Id) };
+//     var newvalues = { $set: {Id: request.body.comment_upd} };
+//     dbo.collection("comments").updateOne(myquery, newvalues, function(err, obj) {
+//       if (err) throw err;
+
+//       console.log("Updated Comment: " + request.body.Id + " to " + request.body.comment_upd)
+//       response.header("Access-Control-Allow-Origin", "*");
+//       response.json({_id: request.body.Id, Comment: request.body.comment_upd});
+//       db.close();
+//     });
+//   });
+// });
 
 
 // start server
