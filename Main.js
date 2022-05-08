@@ -68,13 +68,13 @@ let path = new Image();
 path.src = "sprites/Path.png";
 
 function generateMaze() {
-    let mazeSquares = new Array();
+    let mazeSquares = [];
     //laver et array af arrays og pusher en mazesquare ind i hver af dem
     for (let row = 0; row < rows; row++) {
         mazeSquares[row] = [];
         
         for (let col = 0; col < columns; col++) {
-            let ms = new mazeSquare(col, row, sqWidth*row, sqHeight*col, xJunction);
+            let ms = new mazeSquare(col, row, sqWidth, sqHeight, xJunction);
             mazeSquares[row].push(ms);
             ms.draw(); 
 
@@ -412,25 +412,42 @@ function pickWall() {
 
 
 
+
+
+
 function drawMaze() {
     for(let i = 0; i < columns; i++) {
         for(let j = 0; j < rows; j++) {
-            if(maze[i][j].wall == false) {
-                maze[i][j].background = path;
+            if(objectMaze[i][j].wall == false) {
+                objectMaze[i][j].background = path;
             }
-            maze[i][j].draw();
+            objectMaze[i][j].draw();
         }
     }
 }
 
+let objectMaze = maze;
+
+
+
 setInterval(function() {
+
+
+    
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-   for(let col of maze) {
+   for(let col of objectMaze) {
        for(let row of col) {
            row.draw();
        }
    }
-   drawMaze();
+
+   
+    drawMaze();
+   
+
+    
+
 }, 100);
 
 pickWall();
